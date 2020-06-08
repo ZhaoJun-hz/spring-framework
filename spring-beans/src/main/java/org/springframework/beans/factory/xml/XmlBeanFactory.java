@@ -50,6 +50,11 @@ import org.springframework.core.io.Resource;
  * @deprecated as of Spring 3.1 in favor of {@link DefaultListableBeanFactory} and
  * {@link XmlBeanDefinitionReader}
  */
+
+/**
+ * XmlBeanFactory对DefaultListableBeanFactory进行了扩展，主要用于从XML文件中读取BeanDefinition，对于注册及获取bean都使用从父类DefaultListableBeanFactory
+ * 继承的方法去实现，增加了XmlBeanDefinitionReader类型的reader属性，使用reader属性对资源文件进行读取和获取
+ */
 @Deprecated
 @SuppressWarnings({"serial", "all"})
 public class XmlBeanFactory extends DefaultListableBeanFactory {
