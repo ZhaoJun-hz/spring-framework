@@ -49,6 +49,10 @@ import org.springframework.lang.Nullable;
  * @see ByteArrayResource
  * @see InputStreamResource
  */
+
+/**
+ * Resource 接口封装底层资源，抽象了所有spring内部使用到的底层资源，File，URL，Classpath等
+ */
 public interface Resource extends InputStreamSource {
 
 	/**
@@ -56,6 +60,10 @@ public interface Resource extends InputStreamSource {
 	 * <p>This method performs a definitive existence check, whereas the
 	 * existence of a {@code Resource} handle only guarantees a valid
 	 * descriptor handle.
+	 */
+	/**
+	 * 当前资源是否存在
+	 * @return
 	 */
 	boolean exists();
 
@@ -70,6 +78,10 @@ public interface Resource extends InputStreamSource {
 	 * @see #getInputStream()
 	 * @see #exists()
 	 */
+	/**
+	 * 当前资源是否可读
+	 * @return
+	 */
 	default boolean isReadable() {
 		return exists();
 	}
@@ -79,6 +91,10 @@ public interface Resource extends InputStreamSource {
 	 * If {@code true}, the InputStream cannot be read multiple times,
 	 * and must be read and closed to avoid resource leaks.
 	 * <p>Will be {@code false} for typical resource descriptors.
+	 */
+	/**
+	 * 当前资源是否处于打开状态
+	 * @return
 	 */
 	default boolean isOpen() {
 		return false;
@@ -155,6 +171,12 @@ public interface Resource extends InputStreamSource {
 	 * @return the resource handle for the relative resource
 	 * @throws IOException if the relative resource cannot be determined
 	 */
+	/**
+	 * 基于当前资源创建一个相对资源的方法
+	 * @param relativePath
+	 * @return
+	 * @throws IOException
+	 */
 	Resource createRelative(String relativePath) throws IOException;
 
 	/**
@@ -172,6 +194,10 @@ public interface Resource extends InputStreamSource {
 	 * <p>Implementations are also encouraged to return this value
 	 * from their {@code toString} method.
 	 * @see Object#toString()
+	 */
+	/**
+	 * 用来在错误处理中详细地打印出出错的资源文件
+	 * @return
 	 */
 	String getDescription();
 
