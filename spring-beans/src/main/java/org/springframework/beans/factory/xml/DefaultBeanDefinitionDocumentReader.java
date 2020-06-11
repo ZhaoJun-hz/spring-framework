@@ -323,6 +323,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		 */
 		BeanDefinitionHolder bdHolder = delegate.parseBeanDefinitionElement(ele);
 		if (bdHolder != null) {
+			// Spring中的Bean使用的是默认的标签配置，但是其中的子元素却使用了自定义的配置
 			bdHolder = delegate.decorateBeanDefinitionIfRequired(ele, bdHolder);
 			try {
 				// Register the final decorated instance.
