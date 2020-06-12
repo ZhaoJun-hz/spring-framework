@@ -61,6 +61,8 @@ public class SimpleAliasRegistry implements AliasRegistry {
 				this.aliasMap.remove(alias);
 				if (logger.isDebugEnabled()) {
 					logger.debug("Alias definition '" + alias + "' ignored since it points to same name");
+
+
 				}
 			}
 			else {
