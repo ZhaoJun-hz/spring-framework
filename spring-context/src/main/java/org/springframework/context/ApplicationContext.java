@@ -55,6 +55,10 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.beans.factory.BeanFactory
  * @see org.springframework.core.io.ResourceLoader
  */
+/*
+	ApplicationContext和BeanFactory两者都是用于加载bean的，ApplicationContext提供了更多的扩展功能，ApplicationContext包含BeanFactory
+	的所有功能。
+ */
 public interface ApplicationContext extends EnvironmentCapable, ListableBeanFactory, HierarchicalBeanFactory,
 		MessageSource, ApplicationEventPublisher, ResourcePatternResolver {
 
