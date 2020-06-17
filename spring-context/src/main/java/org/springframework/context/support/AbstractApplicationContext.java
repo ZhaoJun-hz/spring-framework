@@ -669,13 +669,19 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// 设置beanFactory的表达式语言处理器，Spring3增加了表达式语言的支持，默认可以使用#{bean.xxx}的形式来调用相关属性值
 		beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));
 
-		// 为beanFactory增加了一个默认的PropertyEditor，这个主要是对bean的属性等设置管理的一个工具
+		// 为beanFactory增加了一个默认的PropertyEditor实例，这个主要是对bean的属性等设置管理的一个工具
+		// 当Spring在注入bean的属性时，一旦遇到对应的属性会自动调用自定义的解析器进行解析，并利用解析结果代替配置属性进行注入
+		// 自定义的PropertyEditor，如DatePropertyEditorRegistrar1、DatePropertyEditorRegistrar2实例在invokeBeanFactoryPostProcessors注册
+		// 哪什么时候真正注册呢？而不是注册实例
+		// 这里是这样分析的，关心ResourceEditorRegistrar类的registerCustomEditors方法，该方法调用了doRegisterEditor方法，在这个方法，看到了registry.registerCustomEditor()方法
+		// 我们写的DatePropertyEditorRegistrar1、DatePropertyEditorRegistrar2也有registerCustomEditor()方法
+		// 所以我们看下registerCustomEditors方法在哪调用？发现在AbstractBeanFactory的registerCustomEditors方法调用了registerCustomEditors方法
+		// 那么AbstractBeanFactory的registerCustomEditors方法在什么时候调用？发现在AbstractBeanFactory的initBeanWrapper方法调用了，这个方法是在bean初始化的时候调用的一个方法
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
 		// Configure the bean factory with context callbacks.
-		/*
-			添加BeanPostProcess
-		 */
+
+		// 添加BeanPostProcess
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 		// 设置了几个忽略自动装配的接口
 		beanFactory.ignoreDependencyInterface(EnvironmentAware.class);

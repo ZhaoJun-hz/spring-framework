@@ -60,6 +60,9 @@ import org.springframework.util.ReflectionUtils;
  * @see BeanWrapper
  * @see PropertyEditorRegistrySupport
  */
+/*
+	BeanWrapperImpl是BeanWrapper的默认实现，BeanWrapperImpl除了实现BeanWrapper接口外，还继承了PropertyEditorRegistrySupport
+ */
 public class BeanWrapperImpl extends AbstractNestablePropertyAccessor implements BeanWrapper {
 
 	/**
