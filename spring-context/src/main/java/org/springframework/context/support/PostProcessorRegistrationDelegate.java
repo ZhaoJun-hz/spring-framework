@@ -58,19 +58,25 @@ final class PostProcessorRegistrationDelegate {
 		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
 		Set<String> processedBeans = new HashSet<>();
 
+		// 对BeanDefinitionRegistry类型的处理
 		if (beanFactory instanceof BeanDefinitionRegistry) {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
+			// regularPostProcessors：装载普通的BeanFactoryPostProcessor
+			// registryProcessors: 装载和Bean定义有关的 BeanDefinitionRegistryPostProcessor
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
 			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
 
+			// 硬编码注册的后处理器
 			for (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) {
 				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
+					// 对于BeanDefinitionRegistryPostProcessor类型，在BeanDefinitionRegistryPostProcessor的基础上还有自己定义的方法，需要先调用
 					BeanDefinitionRegistryPostProcessor registryProcessor =
 							(BeanDefinitionRegistryPostProcessor) postProcessor;
 					registryProcessor.postProcessBeanDefinitionRegistry(registry);
 					registryProcessors.add(registryProcessor);
 				}
 				else {
+					// 记录常规BeanFactoryPostProcessor
 					regularPostProcessors.add(postProcessor);
 				}
 			}
@@ -79,19 +85,31 @@ final class PostProcessorRegistrationDelegate {
 			// uninitialized to let the bean factory post-processors apply to them!
 			// Separate between BeanDefinitionRegistryPostProcessors that implement
 			// PriorityOrdered, Ordered, and the rest.
+			// 下面就是开始执行Spring容器里面的PostProcessor
+			// 执行顺序：先执行实现了 PriorityOrdered 接口的， 再执行实现了 Ordered 接口的， 最后执行剩下的
 			List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
 
 			// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.
+			// 下面按照类型获取 beanFactory 中的后置处理器
+			// 首先获取 BeanDefinitionRegistryPostProcessor 类型的后置处理器名字。
 			String[] postProcessorNames =
 					beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			for (String ppName : postProcessorNames) {
 				if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
+					// 执行到这里想要获取 beanFactory 中名字为ppName的Bean，
+					// 但是此时Spring中只有BeanDefinition，而没有真正的Bean, 所以获取不到会开始创建名字为 ppName 的Bean.
+					// 实际上在这里创建的 Bean 为 ConfigurationClassPostProcessor 类型的
+					// 该类型为处理@Configuration注解的类
 					currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
 					processedBeans.add(ppName);
 				}
 			}
+			// 排序
 			sortPostProcessors(currentRegistryProcessors, beanFactory);
 			registryProcessors.addAll(currentRegistryProcessors);
+			// 是把currentRegistryProcessors里面所有的处理器一个一个获取出来，然后执行每个处理器对应的postProcessBeanDefinitionRegistry，这个方法非常重要。
+			// 根据上面的代码可以知道属于BeanDefinitionRegistryPostProcessor类型的只有ConfigurationClassPostProcessor
+			// 因此invokeBeanDefinitionRegistryPostProcessors里面执行的是ConfigurationClassPostProcessor的postProcessBeanDefinitionRegistry方法
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
 			currentRegistryProcessors.clear();
 
@@ -127,6 +145,7 @@ final class PostProcessorRegistrationDelegate {
 			}
 
 			// Now, invoke the postProcessBeanFactory callback of all processors handled so far.
+			// 执行BeanDefinitionRegistryPostProcessor的postProcessBeanFactory方法，实际上是使用cgLib将配置类增强
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
 			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
 		}
@@ -138,6 +157,10 @@ final class PostProcessorRegistrationDelegate {
 
 		// Do not initialize FactoryBeans here: We need to leave all regular beans
 		// uninitialized to let the bean factory post-processors apply to them!
+		// 执行BeanFactoryPostProcessor
+		// 执行顺序：先执行实现了 PriorityOrdered 接口的， 再执行实现了 Ordered 接口的， 最后执行剩下的
+		// 做的是 invokeBeanFactoryPostProcessors
+		// 这里获取到Spring中两个BeanFactoryPostProcessor：internalEventListenerProcessor 和 internalConfigurationAnnotationProcessor
 		String[] postProcessorNames =
 				beanFactory.getBeanNamesForType(BeanFactoryPostProcessor.class, true, false);
 
