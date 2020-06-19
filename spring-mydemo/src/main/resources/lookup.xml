@@ -3,10 +3,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="getBeanTest" class="com.zj.pojo.GetBeanTest">
+	<bean id="getBeanTest" class="com.zj.spring.demo.pojo.GetBeanTest">
 		<lookup-method name="getBean" bean="teacher"/>
 	</bean>
 
-	<bean id="teacher" class="com.zj.pojo.Teacher"></bean>
+	<bean id="teacher" class="com.zj.spring.demo.pojo.Teacher"></bean>
 
 </beans>

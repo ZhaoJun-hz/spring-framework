@@ -7,11 +7,11 @@
 							http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
 <!-- Bean 的配置方式 -->
 	<!-- 全类名通过反射机制创建一个对象，id：标识这个对象。注意，类中必须包含无参构造器 -->
-	<bean id="hello" class="com.zj.pojo.Hello"></bean>
+	<bean id="hello" class="com.zj.spring.demo.pojo.Hello"></bean>
 
 	<!-- 调用静态工厂方法创建Bean，将对象创建的过程封装到静态方法中。要声明通过静态方法创建的 Bean, 需要在 Bean 的 class 属性里指定拥有该工厂的方法的类,
 	 同时在 factory-method 属性里指定工厂方法的名称. 最后, 使用 <constrctor-arg> 元素为该方法传递方法参数 -->
-	<bean id="carByStaticFactory" class="com.zj.factory.StaticFactoryCar" factory-method="getCar">
+	<bean id="carByStaticFactory" class="com.zj.spring.demo.factory.StaticFactoryCar" factory-method="getCar">
 		<constructor-arg value="BenTian"></constructor-arg>
 	</bean>
 
@@ -21,14 +21,14 @@
 	 	3. 在 factory-method 属性里指定该工厂方法的名称
 	 	4. 使用 construtor-arg 元素为工厂方法传递方法参数
 	 -->
-	<bean id="carInstanceFactory" class="com.zj.factory.CarInstanceFactory"></bean>
+	<bean id="carInstanceFactory" class="com.zj.spring.demo.factory.CarInstanceFactory"></bean>
 	<bean id="carByInstanceFactory" factory-bean="carInstanceFactory" factory-method="getCar">
 		<constructor-arg value="BenTian"></constructor-arg>
 	</bean>
 
 	<!--  Spring 中有两种类型的 Bean, 一种是普通Bean, 另一种是工厂Bean, 即FactoryBean.
 		工厂 Bean 跟普通Bean不同, 其返回的对象不是指定类的一个实例, 其返回的是该工厂 Bean 的 getObject 方法所返回的对象-->
-	<bean id="carFactoryBean" class="com.zj.pojo.CarFactoryBean">
+	<bean id="carFactoryBean" class="com.zj.spring.demo.pojo.CarFactoryBean">
 		<property name="brand" value="Baoma"></property>
 	</bean>
 <!-- 依赖注入创建bean实例方式 -->
@@ -37,7 +37,7 @@
 		属性注入使用 <property> 元素, 使用 name 属性指定 Bean 的属性名称，value 属性或 <value> 子节点指定属性值
 		属性注入是实际应用中最常用的注入方式
 	 -->
-	<bean id="sayHello" class="com.zj.pojo.SayHello">
+	<bean id="sayHello" class="com.zj.spring.demo.pojo.SayHello">
 		<property name="userName" value="zhao"></property>
 	</bean>
 
@@ -45,19 +45,19 @@
 	 通过构造器的参数位置顺序以及类型，以区别重载构造器
 	 -->
 	<!-- 匹配第一个满足要求的构造器public Car(String brand, String corp, double price) {...}  -->
-	<bean id="car1" class="com.zj.pojo.Car">
+	<bean id="car1" class="com.zj.spring.demo.pojo.Car">
 		<constructor-arg index="0" value="baoma"></constructor-arg>
 		<constructor-arg index="1" value="baoma22"></constructor-arg>
 		<constructor-arg index="2" value="1111"></constructor-arg>
 	</bean>
 	<!-- 第三个参数通过类型区分 -->
-	<bean id="car2" class="com.zj.pojo.Car">
+	<bean id="car2" class="com.zj.spring.demo.pojo.Car">
 		<constructor-arg index="0" value="baoma"></constructor-arg>
 		<constructor-arg index="1" value="baoma22"></constructor-arg>
 		<constructor-arg value="11111" type="int"></constructor-arg>
 	</bean>
 	<!-- 通过name -->
-	<bean id="car3" class="com.zj.pojo.Car">
+	<bean id="car3" class="com.zj.spring.demo.pojo.Car">
 		<constructor-arg name="brand" value="baoma"></constructor-arg>
 		<constructor-arg name="corp" value="baoma22"></constructor-arg>
 		<constructor-arg name="price" value="11111.123" ></constructor-arg>
@@ -65,13 +65,13 @@
 
 	<!--为了简化 XML 文件的配置，越来越多的 XML 文件采用属性而非子元素配置信息。
 		Spring 从 2.5 版本开始引入了一个新的 p 命名空间，可以通过 <bean> 元素属性的方式配置 Bean 的属性。 -->
-	<bean id="person" class="com.zj.pojo.Person" p:name="zhao" p:age="20" p:car-ref="car3"></bean>
+	<bean id="person" class="com.zj.spring.demo.pojo.Person" p:name="zhao" p:age="20" p:car-ref="car3"></bean>
 
 <!-- 注入属性值细节 -->
 	<!-- 字面值value
 		字面值：可用字符串表示的值，可以通过 <value> 元素标签或 value 属性进行注入。 基本数据类型及其封装类、String 等类型都可以采取字面值注入的方式。
 		若字面值中包含特殊字符，可以使用 <![CDATA[]]> 把字面值包裹起来。-->
-	<bean id="car4" class="com.zj.pojo.Car">
+	<bean id="car4" class="com.zj.spring.demo.pojo.Car">
 		<constructor-arg value="AODI" type="java.lang.String"></constructor-arg>
 		<constructor-arg type="java.lang.String">
 			<value><![CDATA[
@@ -86,7 +86,7 @@
 	<!-- 引用ref
 	 	在 Bean 的配置文件中, 可以通过 <ref> 元素或 ref  属性为 Bean 的属性或构造器参数指定对 Bean 的引用.
 	 	也可以在属性或构造器里包含 Bean 的声明, 这样的 Bean 称为内部 Bean-->
-	<bean id="person1" class="com.zj.pojo.Person" >
+	<bean id="person1" class="com.zj.spring.demo.pojo.Person" >
 		<!-- 可以使用专用的 <null/> 元素标签为 Bean 的字符串或其它对象类型的属性注入 null 值。该字段意义不大，因为对应引用类型的属性默认值为null。 -->
 		<property name="name"><null></null></property>
 		<property name="age"><null></null></property>
@@ -101,9 +101,9 @@
 	<!-- 当 Bean 实例仅仅给一个特定的属性使用时, 可以将其声明为内部 Bean. 内部 Bean 声明直接包含在 <property> 或 <constructor-arg> 元素里,
 		不需要设置任何 id 或 name 属性
 		内部 Bean 不能使用在任何其他地方-->
-	<bean id="person2" class="com.zj.pojo.Person">
+	<bean id="person2" class="com.zj.spring.demo.pojo.Person">
 		<property name="car">
-			<bean class="com.zj.pojo.Car">
+			<bean class="com.zj.spring.demo.pojo.Car">
 				<constructor-arg name="brand" value="haha"></constructor-arg>
 				<constructor-arg name="corp" value="haha22"></constructor-arg>
 				<constructor-arg name="price" value="222"></constructor-arg>
@@ -130,7 +130,7 @@
 		Bean引用通过 key-ref 和 value-ref 属性定义
 		使用 <props> 定义 java.util.Properties, 该标签使用多个 <prop> 作为子标签. 每个 <prop> 标签必须定义 key 属性.-->
 
-	<bean id="richPerson" class ="com.zj.pojo.RichPerson">
+	<bean id="richPerson" class ="com.zj.spring.demo.pojo.RichPerson">
 		<constructor-arg value= "John" ></constructor-arg>
 		<constructor-arg value= "23"></constructor-arg>
 
@@ -144,7 +144,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id ="dataSource" class="com.zj.pojo.DataSource">
+	<bean id ="dataSource" class="com.zj.spring.demo.pojo.DataSource">
 		<property name="properties">
 			<props>
 				<prop key="user">root</prop>
@@ -163,15 +163,15 @@
 		bytype：根据类型进行装配，要求该类型的bean唯一否则装配失败，抛NoUniqueBeanDefinitionException
 	-->
 
-	<bean id="car" class="com.zj.pojo.Car">
+	<bean id="car" class="com.zj.spring.demo.pojo.Car">
 		<constructor-arg name="brand" value="car3"></constructor-arg>
 		<constructor-arg name="corp" value="car311"></constructor-arg>
 		<constructor-arg name="price" value="100"></constructor-arg>
 		<constructor-arg name="maxSpeed" value="200"></constructor-arg>
 	</bean>
 
-	<bean id ="person3" class ="com.zj.pojo.Person" p:name="DaoSen"
-		  p:age="25" autowire="byName">
+	<bean id ="person3" class ="com.zj.spring.demo.pojo.Person" p:name="DaoSen"
+          p:age="25" autowire="byName">
 	</bean>
 	<!-- -->
 	<!-- -->

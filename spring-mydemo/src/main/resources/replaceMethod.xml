@@ -3,8 +3,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="testChangeMethod" class="com.zj.pojo.TestChangeMethod">
+	<bean id="testChangeMethod" class="com.zj.spring.demo.pojo.TestChangeMethod">
 		<replaced-method name="changeMe" replacer="replacer"></replaced-method>
 	</bean>
-	<bean id="replacer" class="com.zj.pojo.TestMethodReplacer"></bean>
+	<bean id="replacer" class="com.zj.spring.demo.pojo.TestMethodReplacer"></bean>
 </beans>

@@ -3,23 +3,23 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="userMapper1" class="com.zj.pojo.UserMapper">
+	<bean id="userMapper1" class="com.zj.spring.demo.pojo.UserMapper">
 		<property name="dataValue" value="2020-06-17"/>
 	</bean>
 
-	<bean id="userMapper2" class="com.zj.pojo.UserMapper">
+	<bean id="userMapper2" class="com.zj.spring.demo.pojo.UserMapper">
 		<property name="dataValue" value="2020-06-17 10:50:50"/>
 	</bean>
 
-<!--	<bean id="datePropertyEditor" class="com.zj.propertyeditor.DatePropertyEditor">-->
+<!--	<bean id="datePropertyEditor" class="DatePropertyEditor">-->
 <!--		<property name="format" value="yyyy-MM-dd"/>-->
 <!--	</bean>-->
 
 <!--	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">-->
 <!--		<property name="customEditors">-->
 <!--			<map>-->
-<!--				<entry key="java.util.Date" value="com.zj.propertyeditor.DatePropertyEditor"/>-->
-<!--				<entry key="java.util.Date" value="com.zj.propertyeditor.DatePropertyEditor2"/>-->
+<!--				<entry key="java.util.Date" value="DatePropertyEditor"/>-->
+<!--				<entry key="java.util.Date" value="DatePropertyEditor2"/>-->
 <!--			</map>-->
 <!--		</property>-->
 <!--	</bean>-->
@@ -27,8 +27,8 @@
 	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
 		<property name="propertyEditorRegistrars">
 			<list>
-				<bean class="com.zj.propertyeditor.DatePropertyEditorRegistrar1"/>
-				<bean class="com.zj.propertyeditor.DatePropertyEditorRegistrar2"/>
+				<bean class="com.zj.spring.demo.propertyeditor.DatePropertyEditorRegistrar1"/>
+				<bean class="com.zj.spring.demo.propertyeditor.DatePropertyEditorRegistrar2"/>
 			</list>
 		</property>
 	</bean>

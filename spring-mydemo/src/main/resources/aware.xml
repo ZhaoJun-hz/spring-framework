@@ -2,6 +2,6 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-	<bean id="helloAware" class="com.zj.pojo.aware.HelloAware"></bean>
-	<bean id="testAware" class="com.zj.pojo.aware.TestAware"></bean>
+	<bean id="helloAware" class="com.zj.spring.demo.pojo.aware.HelloAware"></bean>
+	<bean id="testAware" class="com.zj.spring.demo.pojo.aware.TestAware"></bean>
 </beans>
