@@ -25,7 +25,9 @@ public class DependencyInjectionDemo {
 
 		ObjectFactory<ApplicationContext> factory = userRepository.getFactory();
 		System.out.println(factory);
-		System.out.println(beanFactory == factory.getObject());
+		System.out.println(beanFactory == factory.getObject()); // true
+
+		System.out.println(userRepository.getBeanFactory() == beanFactory);// false
 
 	}
 }
